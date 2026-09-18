@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Giscus from '../../components/Giscus.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('science');
@@ -21,4 +22,5 @@ const { Content } = await render(post);
     <Content />
   </article>
   <a href="/science">← 返回科普</a>
+  <Giscus />
 </Base>
