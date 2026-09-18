@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="私密区">
+  <h1>私密区</h1>
+  <div id="loading">加载中…</div>
+  <div id="not-logged-in" style="display:none">
+    <p>请先登录。</p>
+    <a href="/login">去登录</a>
+  </div>
+  <div id="not-whitelisted" style="display:none">
+    <p>你的账号不在白名单内，无法查看私密内容。</p>
+  </div>
+  <div id="content" style="display:none">
+    <ul id="post-list"></ul>
+  </div>
+
+  <script>
+    import { supabase } from '../lib/supabase.js';
+
+    const loading = document.getElementById('loading');
+    const notLogged = document.getElementById('not-logged-in');
+    const notWhite = document.getElementById('not-whitelisted');
+    const content = document.getElementById('content');
+    const list = document.getElementById('post-list');
+
+    function show(el) {
+      loading.style.display = 'none';
+      notLogged.style.display = 'none';
+      notWhite.style.display = 'none';
+      content.style.display = 'none';
+      el.style.display = 'block';
+    }
+
+    async function init() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return show(notLogged);
+
+      const { data, error } = await supabase
+        .from('private_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error || !data || data.length === 0) return show(notWhite);
+
+      list.innerHTML = data.map(p =>
+        `<li><strong>${p.title}</strong><p>${p.content}</p></li>`
+      ).join('');
+      show(content);
+    }
+
+    init();
+  </script>
+</Base>

@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="登录">
+  <h1>登录</h1>
+  <p>输入白名单邮箱，我们会给你发送一个登录链接。</p>
+  <form id="login-form">
+    <input type="email" id="email" placeholder="你的邮箱" required />
+    <button type="submit">发送登录链接</button>
+  </form>
+  <p id="msg"></p>
+
+  <script>
+    import { supabase } from '../lib/supabase.js';
+
+    const form = document.getElementById('login-form');
+    const msg = document.getElementById('msg');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: 'https://xztws.github.io/private',
+        },
+      });
+      msg.textContent = error ? `失败：${error.message}` : '登录链接已发送，请查收邮箱。';
+    });
+  </script>
+</Base>
