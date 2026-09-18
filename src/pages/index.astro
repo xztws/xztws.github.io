@@ -1,17 +1,12 @@
 ---
-
+import Base from '../layouts/Base.astro';
 ---
-
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base title="首页">
+  <h1>西安中学天文社</h1>
+  <p>仰望星空，脚踏实地。</p>
+  <ul>
+    <li><a href="/activities">活动日志</a></li>
+    <li><a href="/gallery">摄影作品</a></li>
+    <li><a href="/science">科普</a></li>
+  </ul>
+</Base>
