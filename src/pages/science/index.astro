@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('science'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base title="科普">
+  <h1>科普</h1>
+  <ul>
+    {posts.map((post) => (
+      <li>
+        <a href={`/science/${post.id}`}>{post.data.title}</a>
+        {post.data.summary && <p>{post.data.summary}</p>}
+      </li>
+    ))}
+  </ul>
+  {posts.length === 0 && <p>暂无科普文章。</p>}
+</Base>

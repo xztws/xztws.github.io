@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const works = (await getCollection('gallery'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base title="摄影作品">
+  <h1>摄影作品</h1>
+  <div class="grid">
+    {works.map((work) => (
+      <a href={`/gallery/${work.id}`} class="card">
+        <img src={work.data.image} alt={work.data.title} />
+        <h3>{work.data.title}</h3>
+      </a>
+    ))}
+  </div>
+  {works.length === 0 && <p>暂无作品。</p>}
+</Base>
