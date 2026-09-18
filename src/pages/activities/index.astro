@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('activities'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base title="活动日志">
+  <h1>活动日志</h1>
+  <ul>
+    {posts.map((post) => (
+      <li>
+        <a href={`/activities/${post.id}`}>{post.data.title}</a>
+        <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
+      </li>
+    ))}
+  </ul>
+  {posts.length === 0 && <p>暂无活动记录。</p>}
+</Base>
